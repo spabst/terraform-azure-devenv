@@ -33,8 +33,17 @@ resource "azurerm_virtual_network" "mtc-vn" {
 }
 
 resource "azurerm_subnet" "mtc-subnet" {
-  name                = "mtc-subnet"
-  resource_group_name = azurerm_resource_group.mtc-rg.name
+  name                 = "mtc-subnet"
+  resource_group_name  = azurerm_resource_group.mtc-rg.name
   virtual_network_name = azurerm_virtual_network.mtc-vn.name
-  address_prefixes       = ["10.123.1.0/24"]
+  address_prefixes     = ["10.123.1.0/24"]
+}
+
+resource "azurerm_network_security_group" "mtc-nsg" {
+  name                = "mtc-nsg"
+  resource_group_name = azurerm_resource_group.mtc-rg.name
+  location            = azurerm_resource_group.mtc-rg.location
+  tags = {
+    environment = "dev"
+  }
 }
