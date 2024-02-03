@@ -63,3 +63,9 @@ resource "azurerm_network_security_rule" "mtc-dev-rule" {
   destination_address_prefix = "*"
 
 }
+
+resource "azurerm_subnet_network_security_group_association" "mtc-nsga" {
+  subnet_id                 = azurerm_subnet.mtc-subnet.id
+  network_security_group_id = azurerm_network_security_group.mtc-nsg.id
+}
+
