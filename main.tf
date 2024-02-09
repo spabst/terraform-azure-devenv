@@ -1,3 +1,6 @@
+# dev environment creation. Based on the work of  on https://www.youtube.com/watch?v=V53AHWun17s and
+# https://courses.morethancertified.com/courses/1692703/lectures/38423512
+
 # We strongly recommend using the required_providers block to set the
 # Azure Provider source and version being used
 terraform {
@@ -125,12 +128,12 @@ resource "azurerm_linux_virtual_machine" "mtc-vm" {
   }
 
   provisioner "local-exec" {
-    command = templatefile("macos-ssh-script.tpl", {
+    command = templatefile("${var.host_os}-ssh-script.tpl", {
       hostname     = self.public_ip_address,
       user         = "adminuser",
       identityfile = "~/.ssh/mtcazurekey",
     })
-    interpreter = ["bash", "-c"]
+    interpreter = var.host_os == "windows" ? ["Powershell", "-Command"] : ["bash", "-c"]
   }
 
   tags = {
